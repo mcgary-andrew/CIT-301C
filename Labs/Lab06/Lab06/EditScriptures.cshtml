@@ -1,0 +1,96 @@
+﻿@{
+    var book = "";
+    var verse = "";
+    var notes = "";
+    var scriptureId = "";
+
+    if (!IsPost)
+    {
+        if (!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt())
+        {
+            scriptureId = Request.QueryString["ID"];
+            var db = Database.Open("WebPagesScripture");
+            var dbCommand = "SELECT * FROM Scripture WHERE ID = @0";
+            var row = db.QuerySingle(dbCommand, scriptureId);
+            if (row != null)
+            {
+                book = row.Book;
+                verse = row.Verse;
+                notes = row.Notes;
+            }
+            else
+            {
+                Validation.AddFormError("No scripture was found for that ID.");
+            }
+        }
+        else
+        {
+            Validation.AddFormError("No scripture was selected.");
+        }
+    }
+    if (IsPost)
+    {
+        Validation.RequireField("book", "You must enter a book");
+        Validation.RequireField("verse", "Verse is required");
+        Validation.RequireField("notes", "You haven't entered any notes");
+        Validation.RequireField("scriptureid", "No scripture ID was submitted!");
+
+        book = Request.Form["book"];
+        verse = Request.Form["verse"];
+        notes = Request.Form["notes"];
+        scriptureId = Request.Form["scriptureId"];
+
+        if (Validation.IsValid())
+        {
+            var db = Database.Open("WebPagesScriptures");
+            var updateCommand = "UPDATE Scriptures SET Book=@0, Verse=@1, Notes=@2 WHERE Id=@3";
+            db.Execute(updateCommand, book, verse, notes, scriptureId);
+            Response.Redirect("~/Scriptures");
+        }
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Edit a Scripture</title>
+    <style>
+        .validation-summary-errors {
+            border: 2px dashed red;
+            color: red;
+            font-weight: bold;
+            margin: 12px;
+        }
+    </style>
+</head>
+</head>
+<body>
+    <h1>Edit a Scripture</h1>
+    @Html.ValidationSummary()
+    <form method="post">
+        <fieldset>
+            <legend>Scripture Information</legend>
+
+            <p>
+                <label for="book">Book:</label>
+                <input type="text" name="book" value="@book" />
+            </p>
+
+            <p>
+                <label for="Verse">Verse:</label>
+                <input type="text" name="verse" value="@verse" />
+            </p>
+
+            <p>
+                <label for="notes">Notes:</label>
+                <input type="text" name="notes" value="@notes" />
+            </p>
+
+            <input type="hidden" name="scriptureid" value="@scriptureId" />
+
+            <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
+        </fieldset>
+    </form>
+    <p><a href="~/Movies">Return to scripture listing</a></p>
+</body>
+</html>
