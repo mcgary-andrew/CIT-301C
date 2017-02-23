@@ -1,5 +1,6 @@
 ﻿@{
     var book = "";
+    var chapter = "";
     var verse = "";
     var notes = "";
     var scriptureId = "";
@@ -15,6 +16,7 @@
             if (row != null)
             {
                 book = row.Book;
+                chapter = row.Chapter;
                 verse = row.Verse;
                 notes = row.Notes;
             }
@@ -44,7 +46,7 @@
 <body>
     <h1>Delete a Scripture</h1>
     @Html.ValidationSummary()
-    <p><a href="~/Movies">Return to scripture listing</a></p>
+    <p><a href="~/Scriptures">Return to scripture listing</a></p>
 
     <form method="post">
         <fieldset>
@@ -53,6 +55,10 @@
             <p>
                 <span>Book:</span>
                 <span>@book</span>
+            </p>
+            <p>
+                <span>Chapter:</span>
+                <span>@chapter</span>
             </p>
 
             <p>

@@ -1,21 +1,27 @@
 ﻿@{
     Validation.RequireField("book", "You must enter a book");
+    Validation.RequireField("chapter", "Chapter is required");
     Validation.RequireField("verse", "Verse is required");
     Validation.RequireField("notes", "You haven't entered any notes");
 
     var book = "";
+    var chapter = "";
     var verse = "";
     var notes = "";
+    var date = "";
 
     if (IsPost && Validation.IsValid())
     {
         book = Request.Form["book"];
+        chapter = Request.Form["chapter"];
         verse = Request.Form["verse"];
         notes = Request.Form["notes"];
+        date = DateTime.Now.ToString();
 
-        var db = Database.Open("WebPagesMovies");
-        var insertCommand = "INSERT INTO Scriptures (Book, Verse, Notes) VALUES(@0, @1, @2)";
-        db.Execute(insertCommand, book, verse, notes);
+
+        var db = Database.Open("WebPagesScriptures");
+        var insertCommand = "INSERT INTO Scriptures (Book, Chapter, Verse, Notes, Date) VALUES(@0, @1, @2, @3, @4)";
+        db.Execute(insertCommand, book, chapter, verse, notes, date);
         Response.Redirect("~/Scriptures");
     }
 }
@@ -52,6 +58,11 @@
                 <input type="text" name="book" value="@Request.Form["book"]" />
                 @Html.ValidationMessage("book")
             </p>
+            <p>
+                <label for="chapter">Chapter:</label>
+                <input type="text" name="chapter" value="@Request.Form["chapter"]" />
+                @Html.ValidationMessage("chapter")
+            </p>
 
             <p>
                 <label for="verse">Verse:</label>
@@ -64,6 +75,7 @@
                 <input type="text" name="notes" value="@Request.Form["notes"]" />
                 @Html.ValidationMessage("notes")
             </p>
+            
 
             <p><input type="submit" name="buttonSubmit" value="Add Scripture" /></p>
         </fieldset>

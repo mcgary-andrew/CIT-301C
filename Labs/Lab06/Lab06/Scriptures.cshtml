@@ -1,5 +1,5 @@
 ﻿@{
-    var db = Database.Open("WebPagesMovies");
+    var db = Database.Open("WebPagesScriptures");
     var selectCommand = "SELECT * FROM Scriptures";
     var searchTerm = "";
 
@@ -72,8 +72,10 @@
         columns: grid.Columns(
           grid.Column(format: @<a href="~/EditScriptures?id=@item.ID">Edit</a>),
           grid.Column("Book"),
+          grid.Column("Chapter"),
           grid.Column("Verse"),
           grid.Column("Notes"),
+          grid.Column("Date"),
           grid.Column(format: @<a href="~/DeleteScriptures?id=@item.ID">Delete</a>)
         )
       )

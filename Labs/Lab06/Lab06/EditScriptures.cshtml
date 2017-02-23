@@ -1,5 +1,6 @@
 ﻿@{
     var book = "";
+    var chapter = "";
     var verse = "";
     var notes = "";
     var scriptureId = "";
@@ -9,12 +10,13 @@
         if (!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt())
         {
             scriptureId = Request.QueryString["ID"];
-            var db = Database.Open("WebPagesScripture");
-            var dbCommand = "SELECT * FROM Scripture WHERE ID = @0";
+            var db = Database.Open("WebPagesScriptures");
+            var dbCommand = "SELECT * FROM Scriptures WHERE ID = @0";
             var row = db.QuerySingle(dbCommand, scriptureId);
             if (row != null)
             {
                 book = row.Book;
+                chapter = row.Chapter;
                 verse = row.Verse;
                 notes = row.Notes;
             }
@@ -31,11 +33,13 @@
     if (IsPost)
     {
         Validation.RequireField("book", "You must enter a book");
+        Validation.RequireField("chapter", "Chapter is required");
         Validation.RequireField("verse", "Verse is required");
         Validation.RequireField("notes", "You haven't entered any notes");
         Validation.RequireField("scriptureid", "No scripture ID was submitted!");
 
         book = Request.Form["book"];
+        chapter = Request.Form["chapter"];
         verse = Request.Form["verse"];
         notes = Request.Form["notes"];
         scriptureId = Request.Form["scriptureId"];
@@ -43,8 +47,8 @@
         if (Validation.IsValid())
         {
             var db = Database.Open("WebPagesScriptures");
-            var updateCommand = "UPDATE Scriptures SET Book=@0, Verse=@1, Notes=@2 WHERE Id=@3";
-            db.Execute(updateCommand, book, verse, notes, scriptureId);
+            var updateCommand = "UPDATE Scriptures SET Book=@0, Chapter=@1, Verse=@2, Notes=@3 WHERE Id=@4";
+            db.Execute(updateCommand, book, chapter, verse, notes, scriptureId);
             Response.Redirect("~/Scriptures");
         }
     }
@@ -77,6 +81,11 @@
             </p>
 
             <p>
+                <label for="chapter">Chapter:</label>
+                <input type="text" name="chapter" value="@chapter" />
+            </p>
+
+            <p>
                 <label for="Verse">Verse:</label>
                 <input type="text" name="verse" value="@verse" />
             </p>
@@ -91,6 +100,6 @@
             <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
         </fieldset>
     </form>
-    <p><a href="~/Movies">Return to scripture listing</a></p>
+    <p><a href="~/Scriptures">Return to scripture listing</a></p>
 </body>
 </html>
