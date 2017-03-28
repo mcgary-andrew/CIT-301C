@@ -21,39 +21,31 @@ namespace MvcMovie.Models
                 context.Movie.AddRange(
                      new Movie
                      {
-                         Title = "When Harry Met Sally",
-                         ReleaseDate = DateTime.Parse("1989-1-11"),
-                         Genre = "Romantic Comedy",
-                         Rating = "R",
+                         Title = "The RM",
+                         ReleaseDate = DateTime.Parse("2002-1-31"),
+                         Genre = "Comedy",
+                         Rating = "PG",
                          Price = 7.99M
                      },
 
                      new Movie
                      {
-                         Title = "Ghostbusters ",
-                         ReleaseDate = DateTime.Parse("1984-3-13"),
+                         Title = "The Best Two Years",
+                         ReleaseDate = DateTime.Parse("2004-2-20"),
                          Genre = "Comedy",
-                         Rating = "PG-13",
+                         Rating = "PG",
                          Price = 8.99M
                      },
 
                      new Movie
                      {
-                         Title = "Ghostbusters 2",
-                         ReleaseDate = DateTime.Parse("1986-2-23"),
-                         Genre = "Comedy",
-                         Rating = "PG-13",
+                         Title = "The Testaments",
+                         ReleaseDate = DateTime.Parse("2000-3-24"),
+                         Genre = "Religious Film",
+                         Rating = "Unrated",
                          Price = 9.99M
-                     },
+                     }
 
-                   new Movie
-                   {
-                       Title = "Rio Bravo",
-                       ReleaseDate = DateTime.Parse("1959-4-15"),
-                       Genre = "Western",
-                       Rating = "R",
-                       Price = 3.99M
-                   }
                 );
                 context.SaveChanges();
             }
